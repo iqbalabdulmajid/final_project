@@ -1,0 +1,104 @@
+.deskripsi {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .wrap-brand .nav-link {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  
+  .wrap-brand .navbar-brand:last-child {
+    margin: 0;
+    padding: 0;
+    padding-block: 1rem;
+    height: 80px;
+    align-items: center;
+  }
+  
+  .deskripsi .wrapper {
+    margin: 100px auto;
+    width: 80%;
+  }
+  
+  .deskripsi img {
+    max-width: 700px;
+    float: left;
+    border: 3px solid rgba(88, 86, 86, 0);
+    border-radius: 10px;
+    margin-right: 20px;
+    margin-left: auto;
+  }
+  
+  .deskripsi .text-box h2 {
+    font-size: 42px;
+    color: orange;
+    line-height: 1.2;
+  }
+  
+  .deskripsi .text-box p {
+    font-size: 16px;
+  }
+  
+  form {
+    margin-top: 20px;
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 2px solid #949baa;
+  }
+  
+  button {
+    background-color: #1051ca;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  h2.nav-nickname {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: white;
+  }
+  
+  hr {
+    margin: 0;
+    border: none;
+    outline: none;
+    background-color: white;
+    opacity: .5;
+    width: 2px;
+    height: 100%
+  }
+  
+  @media (max-width:992px) {
+    hr {
+      opacity: 1;
+      width: 2px;
+      height: 42px;
+    }
+  }
+  
+  @media (max-width:338px) {
+    .wrap-brand {
+      width: 75%;
+    }
+  }

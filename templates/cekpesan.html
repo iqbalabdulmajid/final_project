@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Bookings</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Your Bookings</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Package Name</th>
+                    <th>Additional Package</th>
+                    <th>Number of Participants</th>
+                    <th>Total Cost</th>
+                    <th>Status</th>
+                    <th>Payment Proof</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking['_id'] }}</td>
+                    <td>{{ booking['package']['package_name'] }}</td>
+                    <td>{{ booking['additional_package'] }}</td>
+                    <td>{{ booking['num_participants'] }}</td>
+                    <td>Rp {{ booking['total_cost'] }}</td>
+                    <td>{{ booking['status'] }}</td>
+                    <td>
+                        {% if booking['payment_proof'] %}
+                            <a href="{{ url_for('static', filename='uploads/' ~ booking['payment_proof']) }}">View Proof</a>
+                        {% else %}
+                            <form id="upload-payment-form-{{ booking['_id'] }}" enctype="multipart/form-data">
+                                <input type="file" id="payment-proof-{{ booking['_id'] }}" name="payment_proof" required>
+                                <input type="hidden" id="booking_id-{{ booking['_id'] }}" name="booking_id" value="{{ booking['_id'] }}">
+                                <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            {% for booking in bookings %}
+                $('#upload-payment-form-{{ booking["_id"] }}').on('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: '/upload_payment_proof',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.result === 'success') {
+                                alert('Payment proof uploaded successfully!');
+                                location.reload();
+                            } else {
+                                alert(response.msg);
+                            }
+                        }
+                    });
+                });
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>

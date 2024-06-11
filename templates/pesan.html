@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        .main-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .main-text h1 span {
+            color: #ff6347;
+        }
+        .submit {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Booking Page</h1>
+        <section class="book" id="book">
+          <div class="container">
+            <div class="main-text">
+              <h1><span>B</span>ook</h1>
+            </div>
+            <div class="row">
+              <div class="col-md-6 py-3 py-md-0">
+                <div class="card">
+                  <img src="/static/images/foto3.jpg" alt="" class="img-fluid">
+                </div>
+              </div>
+              <div class="col-md-6 py-3 py-md-0">
+                <form id="booking-form">
+                    <input type="hidden" id="package_id" value="{{ package['_id'] }}">
+                    <div class="form-group">
+                        <label>Package:</label>
+                        <p class="form-control-static">{{ package['package_name'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Price:</label>
+                        <p class="form-control-static">Rp {{ package['price'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Name:</label>
+                        <p class="form-control-static">{{ user['username'] }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-package">Additional Package:</label>
+                        <select class="form-control" id="additional-package" name="additional_package">
+                            <option value="">None</option>
+                            <option value="photographer">Photographer (Rp 200,000)</option>
+                            <option value="bus">Bus (Rp 900,000 per bus)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="num-participants">Number of Participants:</label>
+                        <input type="number" class="form-control" id="num-participants" name="num_participants" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Cost:</label>
+                        <p class="form-control-static">Rp <span id="total-cost">{{ package['price'] }}</span></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            const packagePrice = {{ package['price'] }};
+            let additionalCost = 0;
+
+            function updateTotalCost() {
+                const numParticipants = parseInt($('#num-participants').val()) || 0;
+                const additionalPackage = $('#additional-package').val();
+                let additionalPackageCost = 0;
+
+                if (additionalPackage === 'photographer') {
+                    additionalPackageCost = 200000;
+                } else if (additionalPackage === 'bus') {
+                    additionalPackageCost = Math.ceil(numParticipants / 50) * 900000;
+                }
+
+                const totalCost = packagePrice + additionalPackageCost;
+                $('#total-cost').text(totalCost);
+            }
+
+            $('#num-participants, #additional-package').on('input change', updateTotalCost);
+
+            $('#booking-form').on('submit', function(event) {
+                event.preventDefault();
+
+                const packageId = $('#package_id').val();
+                const additionalPackage = $('#additional-package').val();
+                const numParticipants = $('#num-participants').val();
+                const totalCost = $('#total-cost').text();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/submit_booking',
+                    data: {
+                        package_id: packageId,
+                        additional_package: additionalPackage,
+                        num_participants: numParticipants,
+                        total_cost: totalCost
+                    },
+                    success: function(response) {
+                        if (response.result === 'success') {
+                            window.location.href = '/detail_pesan/' + response.booking_id;
+                        } else {
+                            alert(response.msg);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

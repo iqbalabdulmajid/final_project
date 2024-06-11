@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" type="image/png" sizes="16x16"
+        href="../static/images/kk (1).png">
+    <title>Daftar Page</title>
+    <!-- Link Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- <link href="{{ url_for('static', filename='style1.css') }}" rel="stylesheet"> -->
+
+    <style>
+        :root {
+            --black: #272D3B;
+            --red: #ed176f;
+            --coral: #f7817f;
+            --gradient: linear-gradient(90deg, var(--red), var(--coral));
+            --coral-light: #FFA07A;
+            --coral-dark: #E57373;
+
+            --orange: #FFA07A;
+            --yellow: #FFD700;
+
+            --teal: #008080;
+
+            --sky-blue: #87CEEB;
+
+        }
+
+        /* Style CSS Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 9%;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            font-weight: bolder;
+            color: #fff;
+        }
+
+        header .navbar {
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            color: #fff;
+        }
+
+        header .navbar a:hover {
+            color: var(--red);
+        }
+
+        #menu-bar {
+            font-size: 3rem;
+            cursor: pointer;
+            color: #fff;
+            display: none;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            #menu-bar {
+                display: block;
+            }
+
+            header {
+                padding: 1rem 2rem;
+            }
+
+            header .logo {
+                font-size: 1.5rem;
+            }
+
+            header .navbar {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--black);
+                border-top: .1rem solid rgba(0, 0, 0, .2);
+                padding: 1rem 1.5rem;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            }
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .nav-item::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #1E88E5;
+            transition: width 0.4s;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .nav-link {
+            padding: 10px 5px;
+            transition: 0.2s;
+            font-weight: 500;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .hero-home {
+            min-height: 500px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center 10%;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("static/image.png");
+            ;
+        }
+
+        .section_gap {
+            padding: 3rem 0 0 0;
+            background-image: linear-gradient(135deg, #abdcff00 10%, #0396ff08 100%);
+        }
+
+        .section_gap2 {
+            padding: 4rem 0 0 0;
+            background-image: linear-gradient(135deg, #abdcff00 10%, #0396ff08 100%);
+        }
+
+        hr {
+            opacity: 1;
+            margin: 1rem 0;
+            color: inherit;
+            border: 0;
+            height: 1px;
+            width: 10%;
+            background-color: #c3e2f0;
+        }
+
+        .copyright {
+            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 11%);
+            width: 100%;
+            background: #49629d;
+            color: black;
+            font-weight: 600;
+            box-shadow: 5px 2px 5px 0 rgb(0 0 0 / 27%);
+        }
+
+        .caption {
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .imgisiberita {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .isiberita {
+            max-width: 800px;
+        }
+
+        .is-96x96 {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+        .is-70x70 {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+        .pointer-cursor {
+            cursor: pointer;
+        }
+
+        .btnriwayat {
+            min-width: 104px;
+        }
+
+        .btnriwayatforum {
+            min-width: 122.6px;
+
+        }
+
+        .dropdown-item:hover {
+            background-color: #1E88E5;
+            color: #fff;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .card-img-top {
+                width: 100%;
+                height: 50vw;
+                object-fit: cover;
+            }
+        }
+
+        .is-96x96 {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+        .float {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50px;
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 14pt;
+            border: none;
+            text-decoration: none;
+        }
+
+        .card-img-left {
+            width: 50%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            flex: 1;
+        }
+
+        body {
+            height: 100vh;
+            /* Mengatur tinggi body 100% dari tinggi viewport */
+            overflow: hidden;
+            margin: 0;
+            font-family: var(--bs-font-sans-serif);
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background: transparent 50%;
+            backdrop-filter: blur(30px);
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: 0.25rem;
+            color: #fff;
+        }
+
+        #myVideo {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }
+
+        .semi-transparent {
+            opacity: 0.5;
+        }
+
+        .glowing-animation {
+            position: relative;
+        }
+
+        .semi-transparent {
+            opacity: 0.7;
+            /* Gaya semi-transparan untuk gambar di sebelah kiri */
+        }
+
+        .glowing-animation {
+            position: relative;
+        }
+
+        .semi-transparent {
+            opacity: 0.7;
+            /* Gaya semi-transparan untuk gambar di sebelah kiri */
+        }
+
+        row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(var(--bs-gutter-y) * -1);
+            margin-right: calc(var(--bs-gutter-x) * -.5);
+            margin-left: calc(var(--bs-gutter-x) * -.5);
+        }
+    </style>
+
+    <script src="/static/script.js">
+        
+    </script>
+</head>
+
+<body class="login-banner">
+    <video autoplay muted loop id="myVideo">
+        <source src="../static/bali.mp4" type="video/mp4">
+    </video>
+    <section class="h-100 d-flex align-items-center my-5" style="min-height:100vh;">
+        <div class="container">
+            <div class="row justify-content-sm-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    <div class="card shadow-lg border-0 glowing-animation">
+                        <div class="row g-0" style="box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); ">
+                            <!-- Gambar di sebelah kiri -->
+                            <div class="col-md-5 d-none d-md-block">
+                                <img src="/static/image.png"
+                                    class="card-img-left img-fluid h-100 w-100 semi-transparent " alt="...">
+                            </div>
+                            <!-- Formulir di sebelah kanan -->
+                            <div class="col-md-7">
+                                <div class="card-body p-5">
+                                    <h1 class="fs-4 card-title fw-bold mb-4 text-center">Login & Register</h1>
+                                    <div>
+                                        <div class="mb-3">
+                                            <label class="mb-2 text-muted" for="email">Username</label>
+                                            <input style="background: transparent; color: #fff;" id="username"
+                                                type="text" class="form-control" pattern="^\S+$" name="email" value=""
+                                                required autofocus>
+                                            <div id="help_username" class="invalid-feedback">
+                                                <p id="help_username1"></p>
+                                            </div>
+                                        </div>
+
+                                        <div id="boxnama" class="mb-3 d-none">
+                                            <div class="mb-2 w-100">
+                                                <label class="text-muted" for="nama_lengkap">Nama Lengkap</label>
+                                            </div>
+                                            <input style="background: transparent; color: #fff;" id="nama_lengkap"
+                                                type="text" class="form-control" name="nama_lengkap" required>
+                                            <div id="help_nama" class="invalid-feedback">
+                                                Tolong masukkan nama lengkap anda
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="mb-3">
+                                            <div class="mb-2 w-100">
+                                                <label class="text-muted" for="password">Password</label>
+                                            </div>
+                                            <input style="background: transparent; color: #fff;" id="password"
+                                                type="password" class="form-control" name="password" required>
+                                            <div id="help_pw1" class="invalid-feedback">
+                                                Tolong masukkan password anda
+                                            </div>
+                                        </div>
+
+                                        <div id="sign-up-box" class="d-none">
+                                            <div class="mb-3">
+                                                <div class="mb-2 w-100">
+                                                    <label class="text-muted" for="password">Konfirmasi Password</label>
+                                                </div>
+                                                <input style="background: transparent; color: #fff;"
+                                                    id="confirmpassword" type="password" class="form-control"
+                                                    name="confirmpassword" required>
+                                                <div class="invalid-feedback">
+                                                    <p id="help_pw2"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="sign-in-btn" class="d-flex gap-2">
+                                            <button type="submit" class="btn btn-primary flex-fill text-white"
+                                                onclick="sign_in()">Sign In</button>
+                                            <button type="button" class="btn btn-outline-primary flex-fill"
+                                                onclick="bersih()">Clear</button>
+                                        </div>
+
+                                        <div id="sign-up-btn" class="d-flex gap-2 d-none">
+                                            <button type="submit" class="btn btn-primary flex-fill text-white"
+                                                onclick="sign_up()">Sign Up</button>
+                                            <button type="button" class="btn btn-outline-primary flex-fill"
+                                                onclick="registerbtn()">Cancel</button>
+                                            <button type="button" class="btn btn-outline-primary flex-fill"
+                                                onclick="bersih()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-3 border-0">
+                                    <div id="create1" class="text-center">
+                                        Tidak Punya Akun? <a href="#" onclick="registerbtn()" class="text-bg-info">Klik
+                                            Disini!</a>
+                                    </div>
+                                    <div id="create2" class="text-center d-none">
+                                        Sudah punya akun? <a href="#" class="text-light">Klik Disini!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

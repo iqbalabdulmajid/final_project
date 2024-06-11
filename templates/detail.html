@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <p>Package Name: {{ package.package_name }}</p>
+    <p>Price: {{ order.price }}</p>
+    <p>Status: {{ order.status }}</p>
+
+    {% if order.status == 'pending' %}
+    <form action="/upload_payment" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="order_id" value="{{ order._id }}">
+        <label for="payment_proof">Upload Payment Proof:</label>
+        <input type="file" name="payment_proof" id="payment_proof"><br><br>
+        <input type="submit" value="Upload">
+    </form>
+    {% endif %}
+</body>
+</html>
