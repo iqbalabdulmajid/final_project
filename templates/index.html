@@ -25,18 +25,24 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg" id="navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html" id="logo"><span>W</span>isata</a>
+            <a class="navbar-brand" href="index.html" id="logo"><span>Enchant</span>Bali</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span><i class="fa-solid fa-bars"></i></span>
             </button>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
+                        <a class="nav-link active" href="/">Home</a>
                     </li>
+                    {% if user.role == 'admin' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('cek_pesanan', user_id=user._id) }}">cek pesanan</a>
+                        <a class="nav-link" href="/admin/orders">cek pesanan</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('cek_pesanan', user_id=user._id) }}">cek pesanan</a>
+                  </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#packages">Packages</a>
                     </li>
@@ -51,65 +57,57 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <a class="btn btn-warning" href="login">Login</a>
+                  {% if user %}
+                  <a class="btn btn-warning" href="/logout">Logout</a>
+              {% else %}
+                  <a class="btn btn-warning" href="/login">Login</a>
+              {% endif %}
                 </form>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 </body>
-</html>
-
-
-
-
-
-
     <!-- Home Section Start -->
     <div class="home">
         <div class="content">
-            <h5>Welcome To Website</h5>
-            <h1>Wisata <span class="changecontent"></span></h1>
-            <p>Eksplorasi Bali: Keindahan Alam dan Budaya yang Tak Tertandingi</p>
+            <h5>Welcome To Enchant Bali</h5>
+            <h1> Bersama Kami Kita Bisa <span class="changecontent"></span></h1>
+            <p>Enchant Bali, Sentuhan Ajaib Pulau Dewata untuk Pengalaman Wisata yang Tak Terlupakan dan Membuat Terpesona Selamanya!</p>
             <a href="#book">Book Place</a>
         </div>
     </div>
     <!-- Home Section End -->
 
     <!-- Section Packages Start -->
-    <section class="packages" id="packages">
-      <div class="container">
-        
-        <div class="main-txt">
-          <h1><span>P</span>ackages</h1>
-        </div>
+<section class="packages" id="packages">
+  <div class="container">
+    
+    <div class="main-txt">
+      <h1><span>P</span>ackages</h1>
+    </div>
 
-        <div class="row" style="margin-top: 30px;">
-          {% for package in packages %}
-          <div class="col-md-4 py-3 py-md-0">
+    <div class="row" style="margin-top: 30px;">
+      {% for package in packages %}
+      <div class="col-md-4 py-3 py-md-0">
 
-            <div class="card">
-              
-                      <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ package.photo) }}" alt="Card image cap">
-                      <div class="card-body">
-                          <h5 class="card-title">{{ package.package_name }}</h5>
-                          <p class="card-text">Price: {{ package.price }}</p>
-                          <p class="card-text">Facilities: {{ package.facilities }}</p>
-                          <a href="{{ url_for('pesan', package_id=package._id) }}" class="btn btn-primary">Pesan</a>
-                      </div>
-                  </div>
-              </div>
-              {% endfor %}
+        <div class="card">
+          <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ package.photo) }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ package.package_name }}</h5>
+            <p class="card-text">Price: {{ package.price }}</p>
+            <p class="card-text">Facilities: {{ package.facilities }}</p>
+            <a href="{{ url_for('pesan', package_id=package._id) }}" class="btn btn-primary">Pesan</a>
+            <a href="{{ url_for('detail', package_id=package._id) }}" class="btn btn-secondary">Detail</a>
           </div>
-
-
-
         </div>
-
-
       </div>
-    </section>
-    <!-- Section Packages End -->
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- Section Packages End -->
+
 
     <!-- Section Services Start -->
     <section class="services" id="services">
@@ -218,17 +216,17 @@
         <div class="row" style="margin-top: 30px;">
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g1.jpeg" alt="" height="230px">
+              <img src="/static/index_assets/g1.jpeg" alt="" height="230px">
             </div>
           </div>
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g2.jpg" alt="" height="230px">
+              <img src="/static/index_assets/g2.jpg" alt="" height="230px">
             </div>
           </div>
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g3.jpeg" alt="" height="230px">
+              <img src="/static/index_assets/g3.jpeg" alt="" height="230px">
             </div>
           </div>
         </div>
@@ -237,17 +235,17 @@
         <div class="row" style="margin-top: 30px;">
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g4.jpeg" alt="" height="230px">
+              <img src="/static/index_assets/g4.jpeg" alt="" height="230px">
             </div>
           </div>
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g5.jpeg" alt="" height="230px">
+              <img src="/static/index_assets/g5.jpeg" alt="" height="230px">
             </div>
           </div>
           <div class="col-md-4 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/g6.jpeg" alt="" height="230px">
+              <img src="/static/index_assets/g6.jpeg" alt="" height="230px">
             </div>
           </div>
         </div>
@@ -268,7 +266,7 @@
 
           <div class="col-md-6 py-3 py-md-0">
             <div class="card">
-              <img src="/static/images/about-img.png" alt="">
+              <img src="/static/index_assets/about-img.png" alt="">
             </div>
           </div>
 
@@ -286,7 +284,7 @@
 
     <!-- Footer Start -->
     <footer id="footer">
-      <h1><span>Wisata</span>Bali</h1>
+      <h1><span>Enchant</span>Bali</h1>
       <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus fugiat, ipsa quos nulla qui alias.</p>
       <div class="social-links">
         <i class="fa-brands fa-twitter"></i>

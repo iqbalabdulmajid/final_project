@@ -143,10 +143,6 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-@app.route('/detai')
-def detail():
-    return render_template("detail.html")
-
 @app.route('/pesan', methods=['GET'])
 def pesan():
     package_id = request.args.get('package_id')
@@ -177,6 +173,8 @@ def submit_booking():
         additional_package = request.form["additional_package"]
         num_participants = int(request.form["num_participants"])
         total_cost = int(request.form["total_cost"])
+        start_date = datetime.strptime(request.form["start_date"], "%Y-%m-%d")
+        end_date = datetime.strptime(request.form["end_date"], "%Y-%m-%d")
 
         booking = {
             "user_id": user["_id"],
@@ -184,6 +182,8 @@ def submit_booking():
             "additional_package": additional_package,
             "num_participants": num_participants,
             "total_cost": total_cost,
+            "start_date": start_date,
+            "end_date": end_date,
             "status": "pending",
             "created_at": datetime.utcnow()
         }
@@ -194,6 +194,30 @@ def submit_booking():
         return jsonify({"result": "success", "booking_id": booking_id})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("login"))
+
+@app.route('/cancel_booking', methods=['POST'])
+def cancel_booking():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        
+        data = request.get_json()
+        booking_id = data["booking_id"]
+
+        booking = db.bookings.find_one({"_id": ObjectId(booking_id)})
+        if not booking:
+            return jsonify({"result": "fail", "msg": "Booking not found."})
+
+        start_date = booking['start_date']
+        current_date = datetime.utcnow()
+        if (start_date - current_date).days < 7:
+            return jsonify({"result": "fail", "msg": "Cancellation must be made at least 7 days before the start date."})
+
+        db.bookings.delete_one({"_id": ObjectId(booking_id)})
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("login"))
+
     
 @app.route('/cek_pesanan/<user_id>', methods=['GET'])
 def cek_pesanan(user_id):
@@ -208,7 +232,7 @@ def cek_pesanan(user_id):
             package = db.packages.find_one({"_id": booking["package_id"]})
             booking["package"] = package
         
-        return render_template("cekpesan.html", bookings=bookings)
+        return render_template("cekpesan.html", bookings=bookings, user=user_id)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("login"))
     except Exception as e:
@@ -228,7 +252,27 @@ def detail_pesan(booking_id):
         return render_template("cekpesan.html", booking=booking, package=package, user=user)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("login"))
-
+    
+@app.route("/detail/<package_id>")
+def detail(package_id):
+    token_receive = request.cookies.get("mytoken")
+    user = None  # Initialize user as None by default
+    
+    try:
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user = db.users.find_one({"username": payload['id']})
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Expired token"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    package = db.packages.find_one({"_id": ObjectId(package_id)})
+    if not package:
+        return jsonify({"error": "Package not found"}), 404
+    
+    package['_id'] = str(package['_id'])
+    return render_template("detail.html", package=package, user=user)
 
 @app.route('/upload_payment_proof', methods=['POST'])
 def upload_payment_proof():
@@ -244,9 +288,10 @@ def upload_payment_proof():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             payment_proof.save(filepath)
             
+            # Only save the filename in the database
             db.bookings.update_one(
                 {"_id": ObjectId(booking_id)},
-                {"$set": {"payment_proof": filepath, "status": "waiting_for_approval"}}
+                {"$set": {"payment_proof": filename, "status": "waiting_for_approval"}}
             )
             
             return jsonify({"result": "success"})
@@ -297,52 +342,59 @@ def allowed_file(filename):
 
 
 @app.route('/admin/wisata', methods=['GET', 'POST'])
-
 def manage_wisata():
     packages = db.packages.find()
     return render_template('manage_wisata.html',packages=packages)
 
-@app.route('/admin/add')
+@app.route('/admin/add', methods=['GET', 'POST'])
 def add():
-    packages = []  # Initialize packages list
-    
     if request.method == 'POST':
-        # Check if the post request has the file part
+        # Cek apakah file 'photo' ada dalam request.files
         if 'photo' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        
+
         file = request.files['photo']
+
+        # Jika nama file kosong
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        
+
+        # Jika file diunggah dan merupakan file yang diperbolehkan
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            
-            # Get form data
+
+            # Ambil data lain dari form
             package_name = request.form.get('package_name')
             price = request.form.get('price')
             facilities = request.form.get('facilities')
-            
-            # Save to MongoDB
+            details = request.form.get('details')
+
+            # Buat dictionary untuk package
             package = {
                 "package_name": package_name,
                 "price": price,
                 "facilities": facilities,
+                "details": details,
                 "photo": filename,
                 "created_at": datetime.utcnow()
             }
+
+            # Simpan ke database
             db.packages.insert_one(package)
             flash('Package successfully added')
-    
-    # Retrieve posted data from MongoDB
+
+            # Redirect to 'add' route with success message in query parameter
+            return redirect(url_for('add', success='true'))
+
+    # Ambil data paket yang sudah ada
     packages = db.packages.find()
     return render_template('add.html', packages=packages)
 
-@app.route('/admin/edit/<package_id>', methods=['GET', 'POST'])
 
+@app.route('/admin/edit/<package_id>', methods=['GET', 'POST'])
 def edit(package_id):
     package = db.packages.find_one({"_id": ObjectId(package_id)})
 
@@ -350,8 +402,8 @@ def edit(package_id):
         package_name = request.form.get('package_name')
         price = request.form.get('price')
         facilities = request.form.get('facilities')
+        details = request.form.get('details')
 
-        # Handle photo upload
         if 'photo' in request.files:
             file = request.files['photo']
             if file and allowed_file(file.filename):
@@ -359,17 +411,17 @@ def edit(package_id):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 photo = filename
             else:
-                photo = package['photo']  # Keep old photo if no new photo uploaded
+                photo = package['photo']
         else:
             photo = package['photo']
 
-        # Update package in MongoDB
         db.packages.update_one(
             {"_id": ObjectId(package_id)},
             {"$set": {
                 "package_name": package_name,
                 "price": price,
                 "facilities": facilities,
+                "details": details,
                 "photo": photo,
                 "updated_at": datetime.utcnow()
             }}
@@ -483,7 +535,7 @@ def profile():
     except jwt.InvalidTokenError:
         flash('Invalid token. Please log in again.')
         return redirect(url_for('login'))
-
+    
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)

@@ -79,17 +79,17 @@
     animation: changetext 10s infinite linear;
 }
 @keyframes changetext{
-    0%{content: "Bali";}
-    10%{content: "Sulawesi";}
-    20%{content: "Jawa";}
-    30%{content: "Sumatera";}
-    40%{content: "Papua";}
-    50%{content: "Maluku";}
-    60%{content: "Lombok";}
-    70%{content: "Kalimantan";}
-    80%{content: "Jakarta";}
-    90%{content: "Makassar";}
-    100%{content: "Kendari";}
+    0%{content: "Liburan";}
+    10%{content: "Study Tour";}
+    20%{content: "Study Ekskursi";}
+    30%{content: "Nikahan";}
+    40%{content: "Menjelajah";}
+    50%{content: "Menemukan pengalaman";}
+    60%{content: "Liburan keluarga";}
+    70%{content: "Menemukan Keindahan";}
+    80%{content: "Belajar";}
+    90%{content: "Menemukan kebudayaan";}
+    100%{content: "Menambah Ilmu";}
 } 
 .home .content p{
     color: white;

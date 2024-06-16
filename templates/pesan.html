@@ -4,82 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="static/index_assets/style.css">
+
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Link -->
+
+    <!-- Font Awesome Cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <!-- Font Awesome Cdn -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+
+    <!-- Custom Styles -->
     <style>
-        .main-text h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        .main-text h1 span {
-            color: #ff6347;
-        }
-        .submit {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        .submit:hover {
-            background-color: #0056b3;
-        }
+        /* tambahkan gaya kustom di sini jika diperlukan */
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Booking Page</h1>
-        <section class="book" id="book">
-          <div class="container">
-            <div class="main-text">
-              <h1><span>B</span>ook</h1>
-            </div>
-            <div class="row">
-              <div class="col-md-6 py-3 py-md-0">
-                <div class="card">
-                  <img src="/static/images/foto3.jpg" alt="" class="img-fluid">
-                </div>
-              </div>
-              <div class="col-md-6 py-3 py-md-0">
-                <form id="booking-form">
-                    <input type="hidden" id="package_id" value="{{ package['_id'] }}">
-                    <div class="form-group">
-                        <label>Package:</label>
-                        <p class="form-control-static">{{ package['package_name'] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Price:</label>
-                        <p class="form-control-static">Rp {{ package['price'] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Customer Name:</label>
-                        <p class="form-control-static">{{ user['username'] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="additional-package">Additional Package:</label>
-                        <select class="form-control" id="additional-package" name="additional_package">
-                            <option value="">None</option>
-                            <option value="photographer">Photographer (Rp 200,000)</option>
-                            <option value="bus">Bus (Rp 900,000 per bus)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="num-participants">Number of Participants:</label>
-                        <input type="number" class="form-control" id="num-participants" name="num_participants" min="1" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Total Cost:</label>
-                        <p class="form-control-static">Rp <span id="total-cost">{{ package['price'] }}</span></p>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" id="logo"><span>Enchant</span>Bali</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span><i class="fa-solid fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    {% if user.role == 'admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/orders">cek pesanan</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('cek_pesanan', user_id=user._id) }}">cek pesanan</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#packages">Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    {% if user %}
+                        <a class="btn btn-warning" href="/logout">Logout</a>
+                    {% else %}
+                        <a class="btn btn-warning" href="/login">Login</a>
+                    {% endif %}
                 </form>
-              </div>
             </div>
-          </div>
-        </section>
-    </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Booking Form Section -->
+    <section class="book" id="book">
+        <div class="container mt-5">
+            <h1 class="mb-4">Booking Page</h1>
+            <p class="alert alert-info">Note: Minimum booking duration is 3 days. If the booking exceeds 3 days, an additional cost of Rp 100,000 per day will be applied to the package price.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <img src="/static/index_assets/foto3.jpg" alt="" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form id="booking-form">
+                        <input type="hidden" id="package_id" value="{{ package['_id'] }}">
+                        
+                        <div class="mb-3">
+                            <label for="package-name" class="form-label">Package:</label>
+                            <p class="form-control-static">{{ package['package_name'] }}</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price:</label>
+                            <p class="form-control-static">Rp {{ package['price'] }}</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="customer-name" class="form-label">Customer Name:</label>
+                            <p class="form-control-static">{{ user['username'] }}</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="additional-package" class="form-label">Additional Package:</label>
+                            <select class="form-control" id="additional-package" name="additional_package">
+                                <option value="">None</option>
+                                <option value="photographer">Photographer (Rp 200,000)</option>
+                                <option value="bus">Bus (Rp 900,000 per bus)</option>
+                                <option value="complete">Complete Package (Photographer + Bus Rp 500,000 per 50 participants)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="num-participants" class="form-label">Number of Participants:</label>
+                            <input type="number" class="form-control" id="num-participants" name="num_participants" min="1" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="start-date" class="form-label">Start Date:</label>
+                            <input type="date" class="form-control" id="start-date" name="start_date" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="end-date" class="form-label">End Date:</label>
+                            <input type="date" class="form-control" id="end-date" name="end_date" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="total-cost" class="form-label">Total Cost:</label>
+                            <p class="form-control-static">Rp <span id="total-cost">{{ package['price'] }}</span></p>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" rossorigin="anonymous"></script>
+
     <script>
         $(document).ready(function() {
             const packagePrice = {{ package['price'] }};
@@ -88,19 +152,31 @@
             function updateTotalCost() {
                 const numParticipants = parseInt($('#num-participants').val()) || 0;
                 const additionalPackage = $('#additional-package').val();
+                const startDate = new Date($('#start-date').val());
+                const endDate = new Date($('#end-date').val());
+                const timeDifference = endDate - startDate;
+                const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
                 let additionalPackageCost = 0;
+                let extraDaysCost = 0;
+
+                if (daysDifference > 3) {
+                    extraDaysCost = (daysDifference - 3) * 100000;
+                }
 
                 if (additionalPackage === 'photographer') {
                     additionalPackageCost = 200000;
                 } else if (additionalPackage === 'bus') {
                     additionalPackageCost = Math.ceil(numParticipants / 50) * 900000;
+                } else if (additionalPackage === 'complete') {
+                    additionalPackageCost = Math.ceil(numParticipants / 50) * 500000;
                 }
 
-                const totalCost = packagePrice + additionalPackageCost;
+                const totalCost = packagePrice + additionalPackageCost + extraDaysCost;
                 $('#total-cost').text(totalCost);
             }
 
-            $('#num-participants, #additional-package').on('input change', updateTotalCost);
+            $('#num-participants, #additional-package, #start-date, #end-date').on('input change', updateTotalCost);
 
             $('#booking-form').on('submit', function(event) {
                 event.preventDefault();
@@ -109,6 +185,8 @@
                 const additionalPackage = $('#additional-package').val();
                 const numParticipants = $('#num-participants').val();
                 const totalCost = $('#total-cost').text();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
 
                 $.ajax({
                     type: 'POST',
@@ -117,11 +195,14 @@
                         package_id: packageId,
                         additional_package: additionalPackage,
                         num_participants: numParticipants,
-                        total_cost: totalCost
+                        total_cost: totalCost,
+                        start_date: startDate,
+                        end_date: endDate
                     },
                     success: function(response) {
                         if (response.result === 'success') {
-                            window.location.href = '/detail_pesan/' + response.booking_id;
+                            alert("Booking has been recorded!");
+                            window.location.href = '/';
                         } else {
                             alert(response.msg);
                         }
