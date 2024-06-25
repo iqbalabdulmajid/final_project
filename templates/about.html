@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Enchanting Bali Resort</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/index_assets/style.css">
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Link -->
+
+    <!-- Font Awesome Cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <!-- Font Awesome Cdn -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+</head>
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/" id="logo"><span>Enchant</span>Bali</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span><i class="fa-solid fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    {% if user.role == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orders">cek pesanan</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('cek_pesanan', user_id=user._id) }}">cek pesanan</a>
+                  </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#packages">Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#gallary">Gallary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#about">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                  {% if user %}
+                  <a class="btn btn-warning" href="/logout">Logout</a>
+              {% else %}
+                  <a class="btn btn-warning" href="/login">Login</a>
+              {% endif %}
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+<!-- Home Section Start -->
+<div class="home">
+    <div class="content">
+        <h5>Welcome To Enchant Bali</h5>
+        <h1> Bersama Kami Kita Bisa <span class="changecontent"></span></h1>
+        <p>Enchant Bali, Sentuhan Ajaib Pulau Dewata untuk Pengalaman Wisata yang Tak Terlupakan dan Membuat Terpesona Selamanya!</p>
+        <a href="#book">Book Place</a>
+    </div>
+</div>
+<!-- Home Section End -->
+
+
+    <div class="container content">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="main-txt">
+                    <h1>About <span>Us</span></h1>
+                  </div>
+                <p>
+                    Welcome to Enchanting Bali Resort, where the beauty of Bali meets unparalleled luxury and comfort. Nestled in the heart of Bali, our resort offers a serene escape from the hustle and bustle of everyday life. Immerse yourself in the rich culture, breathtaking landscapes, and warm hospitality that Bali is renowned for.
+                </p>
+                <p>
+                    Our resort features a range of elegantly designed rooms and villas, each thoughtfully appointed to provide a perfect blend of modern amenities and traditional Balinese charm. Whether you're here for a romantic getaway, a family vacation, or a solo retreat, Enchanting Bali Resort promises an unforgettable stay.
+                </p>
+                <p>
+                    Indulge in our world-class spa treatments, savor exquisite local and international cuisine at our on-site restaurants, and explore the vibrant local markets and stunning natural attractions. At Enchanting Bali Resort, we are dedicated to making your stay as magical and memorable as the island itself.
+                </p>
+                <p>
+                    Join us and discover the enchanting spirit of Bali at Enchanting Bali Resort.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 bg-dark text-white">
+        <p>&copy; 2024 Enchanting Bali Resort. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

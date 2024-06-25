@@ -41,11 +41,9 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/admin_panel">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Manage Wisata</span></a>
+                    <span>Manage Wisata</span>
+                </a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -75,7 +73,8 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Lihat Pesanan Wisata</span></a>
+                    <span>Lihat Pesanan Wisata</span>
+                </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Pesanan</h6>
@@ -83,7 +82,6 @@
                     </div>
                 </div>
             </li>
-
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -109,30 +107,8 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -177,7 +153,7 @@
                                             <th>End Date</th>
                                             <th>Status</th>
                                             <th>Payment Proof</th>
-                                            <th>Action</th> <!-- Add a new column for action -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -189,11 +165,15 @@
                                             <td>{{ booking['additional_package'] }}</td>
                                             <td>{{ booking['num_participants'] }}</td>
                                             <td>Rp {{ booking['total_cost'] }}</td>
-                                            <td>{{ booking['start_date'] }}</td> <!-- Start Date -->
-                                            <td>{{ booking['end_date'] }}</td> <!-- End Date -->
+                                            <td>{{ booking['start_date'] }}</td>
+                                            <td>{{ booking['end_date'] }}</td>
                                             <td>{{ booking['status'] }}</td>
                                             <td>
+                                                {% if booking['payment_proof'] %}
                                                 <a href="/static/uploads/{{ booking['payment_proof'] }}" target="_blank" class="btn btn-info">View Proof</a>
+                                                {% else %}
+                                                Belum Bayar
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 {% if booking['status'] == 'pending' or booking['status'] == 'waiting_for_approval' %}

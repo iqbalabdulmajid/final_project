@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,13 +12,10 @@
 
     <!-- Custom fonts for this template-->
     <link href="/static/admin_panel_assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="/static/admin_panel_assets/adminpanel.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -29,7 +25,6 @@
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -45,21 +40,19 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/admin_panel">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
+            <div class="sidebar-heading">Addons</div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Pages</span>
                 </a>
@@ -77,16 +70,16 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>lihat Pesanan Wisata</span></a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Manage pesanan</h6>
-                            <a class="collapse-item" href="/admin/orders">Lihat Semua Pesanan</a>
-                        </div>
+                    <span>lihat Pesanan Wisata</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Manage pesanan</h6>
+                        <a class="collapse-item" href="/admin/orders">Lihat Semua Pesanan</a>
                     </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -101,13 +94,10 @@
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -117,15 +107,12 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello, Admin</span>
-                                <img class="img-profile rounded-circle"
-                                    src="/static/uploads/profile.png">
+                                <img class="img-profile rounded-circle" src="/static/uploads/profile.png">
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -133,31 +120,35 @@
                                 </a>
                             </div>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Add Wisata</h1>
                     </div>
                     
                     <!-- Alert for Success -->
-                    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert"
-                        style="display: none;">
-                        Data package wisata berhasil ditambahkan.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                                {% for category, message in messages %}
+                                    {% if category == 'success' %}
+                                        {{ message }}
+                                    {% endif %}
+                                {% endfor %}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
 
                     <!-- Form to Add Package -->
-                    <form action="/admin/add" method="POST" enctype="multipart/form-data">
+                    <form id="addPackageForm" action="{{ url_for('add') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="package_name">Package Name</label>
                             <input type="text" class="form-control" id="package_name" name="package_name" required>
@@ -185,7 +176,6 @@
             <!-- End of Main Content -->
         </div>
         <!-- End of Content Wrapper -->
-
     </div>
     <!-- End of Page Wrapper -->
 
@@ -202,13 +192,10 @@
     <!-- Script to show alert after form submission -->
     <script>
         $(document).ready(function () {
-            $('#addPackageForm').submit(function (event) {
-                event.preventDefault(); // Prevent default form submission
-                // Perform AJAX request or form submission here
-                // For demonstration purpose, just showing the alert
-                $('#successAlert').fadeIn().delay(3000).fadeOut(); // Show alert for 3 seconds
-                // You can redirect or perform other actions after showing the alert
-            });
+            var successAlert = $('#successAlert');
+            if (successAlert.length > 0) {
+                successAlert.fadeIn().delay(3000).fadeOut();
+            }
         });
     </script>
 

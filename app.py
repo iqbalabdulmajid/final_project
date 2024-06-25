@@ -299,6 +299,20 @@ def upload_payment_proof():
             return jsonify({"result": "fail", "msg": "No file uploaded."})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("login"))
+    
+@app.route('/about')
+def about():
+    token_receive = request.cookies.get("mytoken")
+    packages = list(db.packages.find())
+    try:
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user = db.users.find_one({"username": payload['id']})
+        else:
+            user = None
+        return render_template('about.html', user=user)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return render_template("index.html",user=user)
 
 
 @app.route('/admin_panel', methods=['GET', 'POST'])
@@ -349,30 +363,24 @@ def manage_wisata():
 @app.route('/admin/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        # Cek apakah file 'photo' ada dalam request.files
         if 'photo' not in request.files:
-            flash('No file part')
+            flash('No file part', 'error')
             return redirect(request.url)
 
         file = request.files['photo']
-
-        # Jika nama file kosong
         if file.filename == '':
-            flash('No selected file')
+            flash('No selected file', 'error')
             return redirect(request.url)
 
-        # Jika file diunggah dan merupakan file yang diperbolehkan
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            # Ambil data lain dari form
             package_name = request.form.get('package_name')
             price = request.form.get('price')
             facilities = request.form.get('facilities')
             details = request.form.get('details')
 
-            # Buat dictionary untuk package
             package = {
                 "package_name": package_name,
                 "price": price,
@@ -382,17 +390,12 @@ def add():
                 "created_at": datetime.utcnow()
             }
 
-            # Simpan ke database
             db.packages.insert_one(package)
-            flash('Package successfully added')
+            flash('Package successfully added', 'success')
+            return redirect(url_for('add'))
 
-            # Redirect to 'add' route with success message in query parameter
-            return redirect(url_for('add', success='true'))
-
-    # Ambil data paket yang sudah ada
     packages = db.packages.find()
     return render_template('add.html', packages=packages)
-
 
 @app.route('/admin/edit/<package_id>', methods=['GET', 'POST'])
 def edit(package_id):
@@ -426,17 +429,15 @@ def edit(package_id):
                 "updated_at": datetime.utcnow()
             }}
         )
-        flash('Package successfully updated')
+        flash('Package successfully updated', 'success')
         return redirect(url_for('manage_wisata'))
 
     return render_template('edit_wisata.html', package=package)
 
-
 @app.route('/admin/delete/<package_id>', methods=['POST'])
-
 def delete(package_id):
     db.packages.delete_one({"_id": ObjectId(package_id)})
-    flash('Package successfully deleted')
+    flash('Package successfully deleted', 'success')
     return redirect(url_for('manage_wisata'))
 
 @app.route('/admin/orders')
